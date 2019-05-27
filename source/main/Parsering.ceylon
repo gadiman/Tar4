@@ -23,7 +23,6 @@ shared String  parsering(String tokens) {
 
 
     classFun(arrayOfTokens);
-    print(result);
     return result;
 
 }
@@ -271,10 +270,11 @@ void subrotineCallFunc(LinkedList<String> tokens) {
 
 void termFunc(LinkedList<String> tokens) {
     result += "<term>\n";
+
     if (tokens.get(currTok).contains("<stringConstant>") || tokens.get(currTok).contains("<integerConstant>") || tokens.get(currTok).contains("true")
     || tokens.get(currTok).contains("false") || tokens.get(currTok).contains("null") || tokens.get(currTok).contains("this")) {
         result += tokens.get(currTok++);
-}
+    }
     else if(tokens.get(currTok).contains("<identifier>")) {
         result +=tokens.get(currTok++);
         if (tokens.get(currTok).contains("(")) {
@@ -284,29 +284,28 @@ void termFunc(LinkedList<String> tokens) {
             result +=tokens.get(currTok++);//[
             expressionFunc(tokens);
             result +=tokens.get(currTok++);//]
-        } else if (tokens.get(currTok).contains(".")) {
+        }
+        else if (tokens.get(currTok).contains(".")) {
             result +=tokens.get(currTok++);//.
             subrotineCallFunc(tokens);//subrutinName
             result +=tokens.get(currTok++);//(
             expressionFunc(tokens);//call expretionFunc
             result +=tokens.get(currTok++);//)
-
-
+        }
+        else if(tokens.get(currTok).contains("(")) {
+            result +=tokens.get(currTok++);//(
+            expressionFunc(tokens);//call expretionFunc
+            result += tokens.get(currTok++);//)
+        }
+        else if(tokens.get(currTok).contains("-")) {
+            result +=tokens.get(currTok++);//-
+        }
+        else if(tokens.get(currTok).contains("~")) {
+            result +=tokens.get(currTok++);//~
         }
     }
-    else if(tokens.get(currTok).contains("(")){
-        result +=tokens.get(currTok++);//(
-        expressionFunc(tokens);//call expretionFunc
-        result +=tokens.get(currTok++);//)
-    }
-    else if(tokens.get(currTok).contains("-")) {
-        result +=tokens.get(currTok++);//-
-    }
-    else if(tokens.get(currTok).contains("~")){
-        result+= tokens.get(currTok++);//~
-    }
-  result += "</term>\n";
-    }
+    result += "</term>\n";
+}
 
 
 void expressionListFunc(LinkedList<String> tokens) {

@@ -25,6 +25,9 @@ shared void readFile(String filePath) {
         value index =resource.name.indexOf(".");
         variable String nameOfFile = resource.name.substring(0,index);
 
+        tokens += "<tokens>\n";
+
+
         forEachLine(resource, (String line) {
             String result = makeTokens(line);
             if(result != ""){
@@ -32,12 +35,15 @@ shared void readFile(String filePath) {
             }
         });
 
+        tokens += "</tokens>";
+
+        print(tokens);
         //Print a XML file for Tokens
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,true);
         writeFileXml(pathForXmlFile,textOfFile);
 
         //Parser
-        textOfFile = tokenizer(tokens);
+        //textOfFile = makeParsering(tokens);
 
         //Print a Tree
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,false);
@@ -62,11 +68,6 @@ String changeNameOfSuffix(String name,String dict,Boolean isTokens){
 
 String makeTokens(String line){
   //return String of tokens for the current line
-    return "";
-}
-
-String makeParsering(String line){
-   // return the tree
 
     variable Integer index =0;
     variable String tmp ="";
@@ -78,7 +79,12 @@ String makeParsering(String line){
     if(line.startsWith("/")||line.startsWith("*")||line.empty){
         return "";
     }
-    return parsering(line.substring(index));
+    return tokenizer(line.substring(index));
+}
+
+String makeParsering(String line){
+   // return the tree
+    return parsering(line);
 }
 
 

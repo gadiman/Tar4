@@ -1,23 +1,27 @@
 
 {String*} keywords={"class","constructor","function","method","field","static","var","int","char","boolean","void","true","false","null","this","let","do","if","else","while","return"};
 shared String  tokenizer(String line) {
+
     variable String token ="";
     variable String result ="";
-    result += "<tokens>\n";
     variable Integer index = 0;
+    variable Integer startTok = 0;
+    token = line.substring(0,1);
+
+
     while(index != line.size){
         index++;
-        token = line.substring(0,index);
         if(token == " ") {
             token = "";
         }
         else if(token == '"'.string){
-            while(token.substring(index,index) != '"'.string)
+            while(token.substring(index-1,index) != '"'.string)
             {
                 index++;
                 token = line.substring(0,index);
             }
             result += "<stringConstant>" + " " + token + " " + "</stringConstant>\n";
+            startTok = index;
             token="";
 
         }
@@ -33,35 +37,42 @@ shared String  tokenizer(String line) {
                 token = "&amp;";
             }
             if((token == '/'.string || token == "*") &&
-                (token.substring(index,index+1) == "*"
-                ||token.substring(index,index+1) == "/")){
+                (line.substring(index,index+1) == "*"
+                ||line.substring(index,index+1) == "/")){
                 break;
             }
-            result += "<symbol>" + " " + token + " " + "</symbol>";
+            result += "<symbol>" + " " + token + " " + "</symbol>\n";
+            startTok = index;
             token ="";
         }
-        else{
-            if(token.substring(index,index+1) == " "||
-             "{}()[].,;+-*/&|<>=~".contains(token.substring(index,index+1))){
+        else {
+            if (token == "	") {
+                token = "";
+            }
+            else
+            {
+                if (line.substring(index, index +1 ) == " " ||"{}()[].,;+-*/&|<>=~".contains(line.substring(index, index + 1))) {
 
-                if(keywords.contains(token)){
-                    result+= "<keyword>" + " " + token + " " + "</keyword>\n";
-                }
-                else if(exists num = parseInteger(token)){
-                    result += "<integerConstant>" + " " + token + " " + "</integerConstant>\n";
-                }
-                else if(token != " "){
-                    result += "<identifier>" + " " + token + " " + "</identifier>\n";
-                }
-                token ="";
+                    if (keywords.contains(token)) {
+                        result += "<keyword>" + " " + token + " " + "</keyword>\n";
+                        startTok = index;
+                    } else if (exists num = parseInteger(token)) {
+                        result += "<integerConstant>" + " " + token + " " + "</integerConstant>\n";
+                        startTok = index;
+                    } else if (token != " ") {
+                        result += "<identifier>" + " " + token + " " + "</identifier>\n";
+                        startTok = index;
+                    }
+                    token = "";
 
+
+                }
 
             }
-
         }
 
+        token = line.substring(startTok,index+1);
 
     }
-    result += "</tokens>";
     return result;
 }
