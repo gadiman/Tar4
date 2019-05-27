@@ -282,32 +282,30 @@ void termFunc(LinkedList<String> tokens) {
         }
         else if (tokens.get(currTok).contains("[")) {//[expertion]
             result +=tokens.get(currTok++);//[
-            expressionFunc(currTok);
+            expressionFunc(tokens);
             result +=tokens.get(currTok++);//]
-        }
-        else if (tokens.get(currTok).contains(".")) {
+        } else if (tokens.get(currTok).contains(".")) {
             result +=tokens.get(currTok++);//.
             subrotineCallFunc(tokens);//subrutinName
-            result += tokens.get(currTok++);//(
+            result +=tokens.get(currTok++);//(
             expressionFunc(tokens);//call expretionFunc
             result +=tokens.get(currTok++);//)
 
 
+        }
     }
-        else if(tokens.get(currTok).contains("("){
+    else if(tokens.get(currTok).contains("(")){
         result +=tokens.get(currTok++);//(
         expressionFunc(tokens);//call expretionFunc
         result +=tokens.get(currTok++);//)
     }
-        else if(tokens.get(currTok).contains("-"){
-        result+= tokens.get(currTok++)//-
+    else if(tokens.get(currTok).contains("-")) {
+        result +=tokens.get(currTok++);//-
     }
-        else if(tokens.get(currTok).contains("~"){
-        result+= tokens.get(currTok++)//~
+    else if(tokens.get(currTok).contains("~")){
+        result+= tokens.get(currTok++);//~
     }
-
-}
-    result += "</term>\n";
+  result += "</term>\n";
     }
 
 
