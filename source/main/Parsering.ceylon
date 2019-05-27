@@ -294,15 +294,15 @@ void termFunc(LinkedList<String> tokens) {
 
 
     }
-        else if(tokens.get(currTok).contains"("){
+        else if(tokens.get(currTok).contains("("){
         result +=tokens.get(currTok++);//(
         expressionFunc(tokens);//call expretionFunc
         result +=tokens.get(currTok++);//)
     }
-        else if(tokens.get(currTok).contains"-"){
+        else if(tokens.get(currTok).contains("-"){
         result+= tokens.get(currTok++)//-
     }
-        else if(tokens.get(currTok).contains"-"){
+        else if(tokens.get(currTok).contains("~"){
         result+= tokens.get(currTok++)//~
     }
 
