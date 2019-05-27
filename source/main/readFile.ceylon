@@ -16,10 +16,10 @@ shared void readFile(String filePath) {
 
     if (is File resource) {
 
-        variable String textOfFile="";
+        variable String textOfFile=""; //fainel result
         variable String tokens="";
-        variable String pathForXmlFile ="";
 
+        variable String pathForXmlFile ="";
         variable String dict = resource.directory.string;
 
         value index =resource.name.indexOf(".");
@@ -64,8 +64,7 @@ String makeTokens(String line){
 
 String makeParsering(String tokens){
    // return the tree
-    return "";
-
+     return parsering(tokens);
 }
 
 
