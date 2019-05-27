@@ -26,7 +26,10 @@ shared void readFile(String filePath) {
         variable String nameOfFile = resource.name.substring(0,index);
 
         forEachLine(resource, (String line) {
-            tokens += makeTokens(line);
+            String result = makeTokens(line);
+            if(result != ""){
+                tokens +=result;
+            }
         });
 
         //Print a XML file for Tokens
@@ -62,9 +65,20 @@ String makeTokens(String line){
     return "";
 }
 
-String makeParsering(String tokens){
+String makeParsering(String line){
    // return the tree
-     return parsering(tokens);
+
+    variable Integer index =0;
+    variable String tmp ="";
+    tmp =line;
+    while(tmp.startsWith(" ")){
+        index++;
+        tmp = tmp.substring(index);
+    }
+    if(line.startsWith("/")||line.startsWith("*")||line.empty){
+        return "";
+    }
+    return parsering(line.substring(index));
 }
 
 
