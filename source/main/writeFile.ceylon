@@ -15,7 +15,6 @@ void writeFileXml(String filePath,String text) {
 
         try (appender = file.Appender()) { //Appender not remove the exists text
             appender.write(text);
-
         }
     }
 

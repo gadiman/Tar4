@@ -37,7 +37,7 @@ shared void readFile(String filePath) {
         writeFileXml(pathForXmlFile,textOfFile);
 
         //Parser
-        textOfFile = makeParsering(tokens);
+        textOfFile = tokenizer(tokens);
 
         //Print a Tree
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,false);

@@ -1,17 +1,13 @@
 
 {String*} keywords={"class","constructor","function","method","field","static","var","int","char","boolean","void","true","false","null","this","let","do","if","else","while","return"};
 shared String  tokenizer(String line) {
-
     variable String token ="";
     variable String result ="";
     result += "<tokens>\n";
     variable Integer index = 0;
-
-
     while(index != line.size){
         index++;
         token = line.substring(0,index);
-
         if(token == " ") {
             token = "";
         }
