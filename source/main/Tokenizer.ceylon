@@ -13,6 +13,7 @@ shared String  tokenizer(String line) {
         index++;
         if(token == " ") {
             token = "";
+            startTok++;
         }
         else if(token == '"'.string){
             while(token.substring(index-1,index) != '"'.string)
@@ -20,6 +21,8 @@ shared String  tokenizer(String line) {
                 index++;
                 token = line.substring(0,index);
             }
+            token = line.substring(startTok,index);
+
             result += "<stringConstant>" + " " + token + " " + "</stringConstant>\n";
             startTok = index;
             token="";
@@ -48,6 +51,7 @@ shared String  tokenizer(String line) {
         else {
             if (token == "	") {
                 token = "";
+                startTok++;
             }
             else
             {
