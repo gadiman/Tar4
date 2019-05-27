@@ -287,10 +287,10 @@ void termFunc(LinkedList<String> tokens) {
         }
         else if (tokens.get(currTok).contains(".")) {
             result +=tokens.get(currTok++);//.
-            subrotineCallFunc(tokens)//subrutinName
-        result += tokens.get(currTok++);//(
-        expressionFunc(tokens);//call expretionFunc
-        result +=tokens.get(currTok++);//)
+            subrotineCallFunc(tokens);//subrutinName
+            result += tokens.get(currTok++);//(
+            expressionFunc(tokens);//call expretionFunc
+            result +=tokens.get(currTok++);//)
 
 
     }
@@ -304,7 +304,6 @@ void termFunc(LinkedList<String> tokens) {
     }
         else if(tokens.get(currTok).contains"-"){
         result+= tokens.get(currTok++)//~
-
     }
 
 }
