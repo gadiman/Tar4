@@ -12,6 +12,7 @@ variable Integer currTok = 1;
 
 shared String  parsering(String tokens) {
 
+    result = "";
     value tmp_ =tokens.lines;
     value arrayOfTokens =  LinkedList<String>();
 
@@ -19,19 +20,13 @@ shared String  parsering(String tokens) {
         arrayOfTokens.add(token);
     }
 
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
-    arrayOfTokens.add("@@@@@@@@@@@@");
+
 
     currTok=1;
     classFun(arrayOfTokens);
 
     return result;
+
 
 }
 
@@ -138,7 +133,7 @@ void statementsFunc(LinkedList<String> tokens) {
 
 
     while(tokens.get(currTok).contains("let") ||
-    tokens.get(currTok).contains("if")  ||
+    tokens.get(currTok).contains("if") && !tokens.get(currTok).contains("<identifier>")||
     tokens.get(currTok).contains("while")||
     tokens.get(currTok).contains("do")||
     tokens.get(currTok).contains("return")){
@@ -216,7 +211,7 @@ void doStatementFunc(LinkedList<String> tokens) {
     subrotineCallFunc(tokens);
     result += tokens.get(currTok++) + "\n"; // token--> ;
 
-    result += "</dotStatement>\n";
+    result += "</doStatement>\n";
 
 }
 
@@ -255,7 +250,7 @@ void subrotineCallFunc(LinkedList<String> tokens) {
 
     //result += "<subrotineCall>\n";
 
-    if(! tokens.get(currTok+1).contains("("))
+    if(tokens.get(currTok+1).contains("("))
     {
         result += tokens.get(currTok++) + "\n"; // Name of subroutin
         result += tokens.get(currTok++) + "\n"; // token--> (
@@ -282,35 +277,35 @@ void termFunc(LinkedList<String> tokens) {
 
     if (tokens.get(currTok).contains("<stringConstant>") || tokens.get(currTok).contains("<integerConstant>") || tokens.get(currTok).contains("true")
     || tokens.get(currTok).contains("false") || tokens.get(currTok).contains("null") || tokens.get(currTok).contains("this")) {
-        result += tokens.get(currTok++);
+        result += tokens.get(currTok++)+ "\n";
     }
     else if(tokens.get(currTok).contains("<identifier>")) {
-        result +=tokens.get(currTok++);
+        result +=tokens.get(currTok++)+ "\n";
         if (tokens.get(currTok).contains("(")) {
             subrotineCallFunc(tokens);//(expertion)
         } else if (tokens.get(currTok).contains("[")) {//[expertion]
-            result +=tokens.get(currTok++);//[
+            result +=tokens.get(currTok++)+ "\n";//[
             expressionFunc(tokens);
-            result +=tokens.get(currTok++);//]
+            result +=tokens.get(currTok++)+ "\n";//]
         } else if (tokens.get(currTok).contains(".")) {
-            result +=tokens.get(currTok++);//.
-            result +=tokens.get(currTok++);//Name of subrutian
-            result +=tokens.get(currTok++);//(
-            expressionFunc(tokens);//call expretionFunc
-            result +=tokens.get(currTok++);//)
+            result +=tokens.get(currTok++)+ "\n";//.
+            result +=tokens.get(currTok++)+ "\n";//Name of subrutian
+            result +=tokens.get(currTok++)+ "\n";//(
+            expressionListFunc(tokens);//call expretionFunc
+            result +=tokens.get(currTok++)+ "\n";//)
         }
     }
     else if(tokens.get(currTok).contains("(")) {
-        result +=tokens.get(currTok++);//(
+        result +=tokens.get(currTok++)+ "\n";//(
         expressionFunc(tokens);//call expretionFunc
-        result += tokens.get(currTok++);//)
+        result += tokens.get(currTok++)+ "\n";//)
     }
     else if(tokens.get(currTok).contains("-")) {
-        result +=tokens.get(currTok++);//-
+        result +=tokens.get(currTok++)+ "\n";//-
         termFunc(tokens);
     }
     else if(tokens.get(currTok).contains("~")) {
-        result +=tokens.get(currTok++);//~
+        result +=tokens.get(currTok++)+ "\n";//~
         termFunc(tokens);
 
     }
@@ -319,10 +314,15 @@ void termFunc(LinkedList<String> tokens) {
 
 
 void expressionListFunc(LinkedList<String> tokens) {
-    result += "<expressionList>";
+    result += "<expressionList>\n";
     if(!tokens.get(currTok).contains(")")){
-        result += tokens.get(currTok++) + "\n"; // token--> ,
         expressionFunc(tokens);
+
+        while(tokens.get(currTok).contains(",")){
+            result += tokens.get(currTok++) + "\n"; // token--> ,
+            expressionFunc(tokens);
+        }
+
     }
-    result += "</expressionList>";
+    result += "</expressionList>\n";
 }
