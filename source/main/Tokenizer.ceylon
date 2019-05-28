@@ -21,7 +21,7 @@ shared String  tokenizer(String line) {
                 index++;
                 token = line.substring(0,index);
             }
-            token = line.substring(startTok,index);
+            token = line.substring(startTok+1,index-1);
 
             result += "<stringConstant>" + " " + token + " " + "</stringConstant>\n";
             startTok = index;

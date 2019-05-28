@@ -20,6 +20,7 @@ shared String  parsering(String tokens) {
     }
     arrayOfTokens.remove(arrayOfTokens.last);
     classFun(arrayOfTokens);
+
     currTok=0;
     return result;
 

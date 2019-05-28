@@ -9,6 +9,9 @@ import ceylon.file {
     home
 }
 
+
+variable Boolean flag = false;
+
 shared void readFile(String filePath) {
 
 
@@ -18,7 +21,6 @@ shared void readFile(String filePath) {
 
         variable String textOfFile=""; //fainel result
         variable String tokens="";
-
         variable String pathForXmlFile ="";
         variable String dict = resource.directory.string;
 
@@ -37,13 +39,12 @@ shared void readFile(String filePath) {
 
         tokens += "</tokens>";
 
-        print(tokens);
         //Print a XML file for Tokens
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,true);
-        writeFileXml(pathForXmlFile,textOfFile);
+        writeFileXml(pathForXmlFile,tokens);
 
         //Parser
-        textOfFile = makeParsering(tokens);
+        //textOfFile = makeParsering(tokens);
         //Print a Tree
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,false);
         writeFileXml(pathForXmlFile,textOfFile);
@@ -57,7 +58,7 @@ shared void readFile(String filePath) {
 String changeNameOfSuffix(String name,String dict,Boolean isTokens){
     value index =name.indexOf(".");
     variable String newName = name.substring(0,index);
-    newName+=".xml";
+    newName+="_.xml";
     if(!isTokens) {
         return dict + "\\" + newName;
     }
@@ -68,17 +69,37 @@ String changeNameOfSuffix(String name,String dict,Boolean isTokens){
 String makeTokens(String line){
   //return String of tokens for the current line
 
+
+    if(flag){
+        if(line.contains("*/")){
+            flag = false;
+        }
+        return"";
+    }
+
+
     variable Integer index =0;
     variable String tmp ="";
+    variable String tmp_ =" ";
     tmp =line;
-    while(tmp.startsWith(" ")){
+
+    while(tmp_.startsWith(" ")){
         index++;
-        tmp = tmp.substring(index);
+        tmp_ = tmp.substring(index);
     }
-    if(line.startsWith("/")||line.startsWith("*")||line.empty){
+    if(index ==1){
+        tmp_ = tmp.substring(0);
+    }
+    print(tmp_);
+
+
+    if(tmp_.startsWith("/")){
+        if(tmp_.startsWith("/*") && !tmp_.contains("*/")){
+            flag =true;
+        }
         return "";
     }
-    return tokenizer(line.substring(index));
+    return tokenizer(tmp_);
 }
 
 String makeParsering(String line){
