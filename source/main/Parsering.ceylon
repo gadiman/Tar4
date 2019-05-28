@@ -7,7 +7,7 @@ import ceylon.file {
 }
 
 variable String result = "";
-variable Integer currTok = 0;
+variable Integer currTok = 1;
 
 
 shared String  parsering(String tokens) {
@@ -15,18 +15,28 @@ shared String  parsering(String tokens) {
     value tmp_ =tokens.lines;
     value arrayOfTokens =  LinkedList<String>();
 
-    for (token in tmp_.rest ){
+    for (token in tmp_ ){
         arrayOfTokens.add(token);
     }
-    arrayOfTokens.remove(arrayOfTokens.last);
+
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+    arrayOfTokens.add("@@@@@@@@@@@@");
+
+    currTok=1;
     classFun(arrayOfTokens);
 
-    currTok=0;
     return result;
 
 }
 
 void classFun (LinkedList<String> tokens){
+
     result += "<class>\n";
     result += tokens.get(currTok++) + "\n"; //The word 'class'
     result += tokens.get(currTok++) + "\n"; //Name of the Class
@@ -56,7 +66,7 @@ void classVarDecFun (LinkedList<String> tokens) {
 
 void parameterListFunc(LinkedList<String> tokens){
     result += "<parameterList>\n";
-    if(! tokens.get(currTok+1).contains(")")){ //if it dose so the Parm list is empty
+    if(! tokens.get(currTok).contains(")")){ //if it dose so the Parm list is empty
         result += tokens.get(currTok++) + "\n"; // Type -identifier
         result += tokens.get(currTok++) + "\n"; //varName -identifier
     }
@@ -100,7 +110,7 @@ void subrutinBodyFunc(LinkedList<String> tokens){
     varDecFunc(tokens);
     statementsFunc(tokens);
 
-    result += tokens.get(currTok++) + "\n"; //token --> {
+    result += tokens.get(currTok++) + "\n"; //token --> }
     result += "</subroutineBody>\n";
 }
 
@@ -128,7 +138,7 @@ void statementsFunc(LinkedList<String> tokens) {
 
 
     while(tokens.get(currTok).contains("let") ||
-    tokens.get(currTok).contains("if") ||
+    tokens.get(currTok).contains("if")  ||
     tokens.get(currTok).contains("while")||
     tokens.get(currTok).contains("do")||
     tokens.get(currTok).contains("return")){
@@ -243,7 +253,7 @@ void expressionFunc(LinkedList<String> tokens) {
 
 void subrotineCallFunc(LinkedList<String> tokens) {
 
-    result += "<subrotineCall>\n";
+    //result += "<subrotineCall>\n";
 
     if(! tokens.get(currTok+1).contains("("))
     {
@@ -263,7 +273,7 @@ void subrotineCallFunc(LinkedList<String> tokens) {
         result += tokens.get(currTok++) + "\n"; // token--> )
     }
 
-    result += "</subrotineCall>\n";
+    //result += "</subrotineCall>\n";
 
 }
 
@@ -278,30 +288,31 @@ void termFunc(LinkedList<String> tokens) {
         result +=tokens.get(currTok++);
         if (tokens.get(currTok).contains("(")) {
             subrotineCallFunc(tokens);//(expertion)
-        }
-        else if (tokens.get(currTok).contains("[")) {//[expertion]
+        } else if (tokens.get(currTok).contains("[")) {//[expertion]
             result +=tokens.get(currTok++);//[
             expressionFunc(tokens);
             result +=tokens.get(currTok++);//]
-        }
-        else if (tokens.get(currTok).contains(".")) {
+        } else if (tokens.get(currTok).contains(".")) {
             result +=tokens.get(currTok++);//.
-            subrotineCallFunc(tokens);//subrutinName
+            result +=tokens.get(currTok++);//Name of subrutian
             result +=tokens.get(currTok++);//(
             expressionFunc(tokens);//call expretionFunc
             result +=tokens.get(currTok++);//)
         }
-        else if(tokens.get(currTok).contains("(")) {
-            result +=tokens.get(currTok++);//(
-            expressionFunc(tokens);//call expretionFunc
-            result += tokens.get(currTok++);//)
-        }
-        else if(tokens.get(currTok).contains("-")) {
-            result +=tokens.get(currTok++);//-
-        }
-        else if(tokens.get(currTok).contains("~")) {
-            result +=tokens.get(currTok++);//~
-        }
+    }
+    else if(tokens.get(currTok).contains("(")) {
+        result +=tokens.get(currTok++);//(
+        expressionFunc(tokens);//call expretionFunc
+        result += tokens.get(currTok++);//)
+    }
+    else if(tokens.get(currTok).contains("-")) {
+        result +=tokens.get(currTok++);//-
+        termFunc(tokens);
+    }
+    else if(tokens.get(currTok).contains("~")) {
+        result +=tokens.get(currTok++);//~
+        termFunc(tokens);
+
     }
     result += "</term>\n";
 }

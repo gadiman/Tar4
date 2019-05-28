@@ -44,7 +44,7 @@ shared void readFile(String filePath) {
         writeFileXml(pathForXmlFile,tokens);
 
         //Parser
-        //textOfFile = makeParsering(tokens);
+        textOfFile = makeParsering(tokens);
         //Print a Tree
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,false);
         writeFileXml(pathForXmlFile,textOfFile);
@@ -58,12 +58,11 @@ shared void readFile(String filePath) {
 String changeNameOfSuffix(String name,String dict,Boolean isTokens){
     value index =name.indexOf(".");
     variable String newName = name.substring(0,index);
-    newName+="_.xml";
+    newName+= "_.xml";
     if(!isTokens) {
-        return dict + "\\" + newName;
+        return dict + "\\P" + newName;
     }
-
-     return dict+"\\" + "T" + newName;
+     return dict+"\\"  + newName;
 }
 
 String makeTokens(String line){
@@ -90,8 +89,6 @@ String makeTokens(String line){
     if(index ==1){
         tmp_ = tmp.substring(0);
     }
-    print(tmp_);
-
 
     if(tmp_.startsWith("/")){
         if(tmp_.startsWith("/*") && !tmp_.contains("*/")){
