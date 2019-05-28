@@ -43,8 +43,7 @@ shared void readFile(String filePath) {
         writeFileXml(pathForXmlFile,textOfFile);
 
         //Parser
-        //textOfFile = makeParsering(tokens);
-
+        textOfFile = makeParsering(tokens);
         //Print a Tree
         pathForXmlFile = changeNameOfSuffix(resource.name,dict,false);
         writeFileXml(pathForXmlFile,textOfFile);
