@@ -8,11 +8,14 @@ import ceylon.file {
 
 variable String result = "";
 variable Integer currTok = 1;
+variable String space = "";
+
 
 
 shared String  parsering(String tokens) {
 
     result = "";
+    space = "";
     value tmp_ =tokens.lines;
     value arrayOfTokens =  LinkedList<String>();
 
@@ -32,46 +35,58 @@ shared String  parsering(String tokens) {
 
 void classFun (LinkedList<String> tokens){
 
-    result += "<class>\n";
-    result += tokens.get(currTok++) + "\n"; //The word 'class'
-    result += tokens.get(currTok++) + "\n"; //Name of the Class
-    result += tokens.get(currTok++) + "\n"; //{
+    result += space + "<class>\n";
+    space +=" ";
+
+    result += space + tokens.get(currTok++) + "\n"; //The word 'class'
+    result += space + tokens.get(currTok++) + "\n"; //Name of the Class
+    result += space + tokens.get(currTok++) + "\n"; //{
+
     classVarDecFun(tokens);
     subrotineDecFun(tokens);
-    result += tokens.get(currTok++) + "\n"; //}
-    result += "</class>\n";
+
+    result += space + tokens.get(currTok++) + "\n"; //}
+    space =space.substring(1);
+    result += space + "</class>\n";
 }
 
 void classVarDecFun (LinkedList<String> tokens) {
 
+
     while (tokens.get(currTok).contains("static") || tokens.get(currTok).contains("field")) {
-        result += "<classVarDec>\n";
-        result += tokens.get(currTok++) + "\n"; //The word 'static' or 'field'
-        result += tokens.get(currTok++) + "\n"; //Type - int|boolean|ClassName
-        result += tokens.get(currTok++) + "\n"; //varName -identifier
+        result += space + "<classVarDec>\n";
+        space += " ";
+        result += space + tokens.get(currTok++) + "\n"; //The word 'static' or 'field'
+        result += space + tokens.get(currTok++) + "\n"; //Type - int|boolean|ClassName
+        result += space + tokens.get(currTok++) + "\n"; //varName -identifier
 
         while (tokens.get(currTok).contains(",")) {
-            result += tokens.get(currTok++) + "\n"; // token --> ,
-            result += tokens.get(currTok++) + "\n"; //varName -identifier
+            result += space + tokens.get(currTok++) + "\n"; // token --> ,
+            result += space + tokens.get(currTok++) + "\n"; //varName -identifier
         }
-        result += tokens.get(currTok++) + "\n"; // ;
-        result += "</classVarDec>\n";
+        result += space + tokens.get(currTok++) + "\n"; // ;
+        space =space.substring(1);
+        result += space + "</classVarDec>\n";
     }
+
+
 }
 
 void parameterListFunc(LinkedList<String> tokens){
-    result += "<parameterList>\n";
+    result += space + "<parameterList>\n";
+    space += " ";
     if(! tokens.get(currTok).contains(")")){ //if it dose so the Parm list is empty
-        result += tokens.get(currTok++) + "\n"; // Type -identifier
-        result += tokens.get(currTok++) + "\n"; //varName -identifier
+        result += space + tokens.get(currTok++) + "\n"; // Type -identifier
+        result += space + tokens.get(currTok++) + "\n"; //varName -identifier
     }
 
     while (tokens.get(currTok).contains(",")) {
-        result += tokens.get(currTok++) + "\n"; // token --> ,
-        result += tokens.get(currTok++) + "\n"; // Type -identifier
-        result += tokens.get(currTok++) + "\n"; //varName -identifier
+        result += space + tokens.get(currTok++) + "\n"; // token --> ,
+        result += space + tokens.get(currTok++) + "\n"; // Type -identifier
+        result += space + tokens.get(currTok++) + "\n"; //varName -identifier
     }
-    result += "</parameterList>\n";
+    space =space.substring(1);
+    result += space + "</parameterList>\n";
 }
 
 
@@ -81,57 +96,61 @@ void subrotineDecFun (LinkedList<String> tokens) {
     tokens.get(currTok).contains("function") ||
     tokens.get(currTok).contains("method")) {
 
-        result += "<subroutineDec>\n";
-        result += tokens.get(currTok++) + "\n"; // Token for word function or constractor or method
-        result += tokens.get(currTok++) + "\n"; //Token for word void or type(identifier)
-        result += tokens.get(currTok++) + "\n"; //Name of the Subrotine
-        result += tokens.get(currTok++) + "\n"; //token--> (
+        result += space + "<subroutineDec>\n";
+        space += " ";
+        result += space + tokens.get(currTok++) + "\n"; // Token for word function or constractor or method
+        result += space + tokens.get(currTok++) + "\n"; //Token for word void or type(identifier)
+        result += space + tokens.get(currTok++) + "\n"; //Name of the Subrotine
+        result += space + tokens.get(currTok++) + "\n"; //token--> (
 
         parameterListFunc(tokens); //The Parm list
 
-        result += tokens.get(currTok++) + "\n"; //token --> )
+        result += space + tokens.get(currTok++) + "\n"; //token --> )
 
         subrutinBodyFunc(tokens); //body of func
-
-        result += "</subroutineDec>\n";
+        space =space.substring(1);
+        result += space + "</subroutineDec>\n";
     }
 
 }
 
 void subrutinBodyFunc(LinkedList<String> tokens){
-    result += "<subroutineBody>\n";
-    result += tokens.get(currTok++) + "\n"; //token --> {
+    result += space + "<subroutineBody>\n";
+    space += " ";
+    result += space + tokens.get(currTok++) + "\n"; //token --> {
 
     varDecFunc(tokens);
     statementsFunc(tokens);
 
-    result += tokens.get(currTok++) + "\n"; //token --> }
-    result += "</subroutineBody>\n";
+    result += space + tokens.get(currTok++) + "\n"; //token --> }
+    space =space.substring(1);
+    result += space + "</subroutineBody>\n";
 }
 
 void varDecFunc(LinkedList<String> tokens) {
 
     while (tokens.get(currTok).contains("var")) {
-        result+= "<varDec>\n";
-        result += tokens.get(currTok++) + "\n"; //The word 'var'
-        result += tokens.get(currTok++) + "\n"; //Type - identifier
-        result += tokens.get(currTok++) + "\n"; //varName -identifier
+        result += space + "<varDec>\n";
+        space += " ";
+        result += space + tokens.get(currTok++) + "\n"; //The word 'var'
+        result += space + tokens.get(currTok++) + "\n"; //Type - identifier
+        result += space + tokens.get(currTok++) + "\n"; //varName -identifier
 
         while (tokens.get(currTok).contains(",")) {
-            result += tokens.get(currTok++) + "\n"; // token --> ,
-            result += tokens.get(currTok++) + "\n"; //varName -identifier
+            result += space + tokens.get(currTok++) + "\n"; // token --> ,
+            result += space + tokens.get(currTok++) + "\n"; //varName -identifier
         }
 
-        result += tokens.get(currTok++) + "\n"; // ;
-        result+= "</varDec>\n";
+        result += space + tokens.get(currTok++) + "\n"; // ;
+        space =space.substring(1);
+        result += space + "</varDec>\n";
     }
 }
 
 void statementsFunc(LinkedList<String> tokens) {
 
-    result+= "<statements>\n";
-
-
+    result += space + "<statements>\n";
+    space += " ";
     while(tokens.get(currTok).contains("let") ||
     tokens.get(currTok).contains("if") && !tokens.get(currTok).contains("<identifier>")||
     tokens.get(currTok).contains("while")||
@@ -151,83 +170,92 @@ void statementsFunc(LinkedList<String> tokens) {
         }
 
     }
-    result+= "</statements>\n";
+    space =space.substring(1);
+    result += space + "</statements>\n";
 }
 
 void letStatementFunc(LinkedList<String> tokens) {
-    result +="<letStatement>\n";
+    result += space +"<letStatement>\n";
+    space += " ";
 
-    result += tokens.get(currTok++) + "\n"; // Word 'let'
-    result += tokens.get(currTok++) + "\n"; //varName -identifier
+    result += space + tokens.get(currTok++) + "\n"; // Word 'let'
+    result += space + tokens.get(currTok++) + "\n"; //varName -identifier
 
     if(tokens.get(currTok).contains("[")){
-        result += tokens.get(currTok++) + "\n"; // token--> [
+        result += space + tokens.get(currTok++) + "\n"; // token--> [
         expressionFunc(tokens);
-        result += tokens.get(currTok++) + "\n"; //token-->]
+        result += space + tokens.get(currTok++) + "\n"; //token-->]
     }
 
-    result += tokens.get(currTok++) + "\n"; // token--> =
+    result += space + tokens.get(currTok++) + "\n"; // token--> =
     expressionFunc(tokens);
-    result += tokens.get(currTok++) + "\n"; // token--> ;
-
-    result += "</letStatement>\n";
+    result += space + tokens.get(currTok++) + "\n"; // token--> ;
+    space =space.substring(1);
+    result += space + "</letStatement>\n";
 }
 
 void ifStatementFunc(LinkedList<String> tokens) {
-    result +="<ifStatement>\n";
-    result += tokens.get(currTok++) + "\n"; // Word 'if'
-    result += tokens.get(currTok++) + "\n"; // token--> (
+    result += space +"<ifStatement>\n";
+    space += " ";
+    result += space + tokens.get(currTok++) + "\n"; // Word 'if'
+    result += space + tokens.get(currTok++) + "\n"; // token--> (
     expressionFunc(tokens);
-    result += tokens.get(currTok++) + "\n"; // token--> )
-    result += tokens.get(currTok++) + "\n"; // token--> {
+    result += space + tokens.get(currTok++) + "\n"; // token--> )
+    result += space + tokens.get(currTok++) + "\n"; // token--> {
     statementsFunc(tokens);
-    result += tokens.get(currTok++) + "\n"; // token--> }
+    result += space + tokens.get(currTok++) + "\n"; // token--> }
 
     if(tokens.get(currTok).contains("else")){
-        result += tokens.get(currTok++) + "\n"; // Word 'else'
-        result += tokens.get(currTok++) + "\n"; // token--> {
+        result += space + tokens.get(currTok++) + "\n"; // Word 'else'
+        result += space + tokens.get(currTok++) + "\n"; // token--> {
         statementsFunc(tokens);
-        result += tokens.get(currTok++) + "\n"; // token--> }
+        result += space + tokens.get(currTok++) + "\n"; // token--> }
     }
-    result += "</ifStatement>\n";
+    space =space.substring(1);
+    result += space + "</ifStatement>\n";
 }
 
 void whileStatementFunc(LinkedList<String> tokens) {
-    result +="<whileStatement>\n";
-    result += tokens.get(currTok++) + "\n"; // Word 'While'
-    result += tokens.get(currTok++) + "\n"; // token--> (
+    result += space +"<whileStatement>\n";
+    space += " ";
+    result += space + tokens.get(currTok++) + "\n"; // Word 'While'
+    result += space + tokens.get(currTok++) + "\n"; // token--> (
     expressionFunc(tokens);
-    result += tokens.get(currTok++) + "\n"; // token--> )
-    result += tokens.get(currTok++) + "\n"; // token--> {
+    result += space + tokens.get(currTok++) + "\n"; // token--> )
+    result += space + tokens.get(currTok++) + "\n"; // token--> {
     statementsFunc(tokens);
-    result += tokens.get(currTok++) + "\n"; // token--> }
-    result += "</whileStatement>\n";
+    result += space + tokens.get(currTok++) + "\n"; // token--> }
+    space =space.substring(1);
+    result += space + "</whileStatement>\n";
 }
 
 void doStatementFunc(LinkedList<String> tokens) {
-    result +="<doStatement>\n";
-
-    result += tokens.get(currTok++) + "\n"; // Word 'do'
+    result += space +"<doStatement>\n";
+    space += " ";
+    result += space + tokens.get(currTok++) + "\n"; // Word 'do'
     subrotineCallFunc(tokens);
-    result += tokens.get(currTok++) + "\n"; // token--> ;
-
-    result += "</doStatement>\n";
+    result += space + tokens.get(currTok++) + "\n"; // token--> ;
+    space =space.substring(1);
+    result += space + "</doStatement>\n";
 
 }
 
 void returnStatementFunc(LinkedList<String> tokens) {
-    result +="<returnStatement>\n";
-    result += tokens.get(currTok++) + "\n"; // Word 'return'
+    result += space +"<returnStatement>\n";
+    space += " ";
+    result += space + tokens.get(currTok++) + "\n"; // Word 'return'
 
     if(!tokens.get(currTok).contains(";")){
         expressionFunc(tokens);
     }
-    result += tokens.get(currTok++) + "\n"; // token--> ;
-    result += "</returnStatement>\n";
+    result += space + tokens.get(currTok++) + "\n"; // token--> ;
+    space =space.substring(1);
+    result += space + "</returnStatement>\n";
 }
 
 void expressionFunc(LinkedList<String> tokens) {
-    result += "<expression>\n";
+    result += space + "<expression>\n";
+    space += " ";
     termFunc(tokens);
     while (tokens.get(currTok).contains("+") ||
     tokens.get(currTok).contains("-") ||
@@ -239,90 +267,94 @@ void expressionFunc(LinkedList<String> tokens) {
     tokens.get(currTok).contains("&gt")||
     tokens.get(currTok).contains("=")) {
 
-        result += tokens.get(currTok++) + "\n"; // op token
+        result += space + tokens.get(currTok++) + "\n"; // op token
         termFunc(tokens);
     }
-
-    result += "</expression>\n";
+    space =space.substring(1);
+    result += space + "</expression>\n";
 }
 
 void subrotineCallFunc(LinkedList<String> tokens) {
 
-    //result += "<subrotineCall>\n";
+    //result += space + "<subrotineCall>\n";
 
     if(tokens.get(currTok+1).contains("("))
     {
-        result += tokens.get(currTok++) + "\n"; // Name of subroutin
-        result += tokens.get(currTok++) + "\n"; // token--> (
+        result += space + tokens.get(currTok++) + "\n"; // Name of subroutin
+        result += space + tokens.get(currTok++) + "\n"; // token--> (
         expressionListFunc(tokens);
-        result += tokens.get(currTok++) + "\n"; // token--> )
+        result += space + tokens.get(currTok++) + "\n"; // token--> )
 
     }
     else
     {
-        result += tokens.get(currTok++) + "\n"; // Name of class or var
-        result += tokens.get(currTok++) + "\n"; // token--> .
-        result += tokens.get(currTok++) + "\n"; // token--> Name of subroutin
-        result += tokens.get(currTok++) + "\n"; // token--> (
+        result += space + tokens.get(currTok++) + "\n"; // Name of class or var
+        result += space + tokens.get(currTok++) + "\n"; // token--> .
+        result += space + tokens.get(currTok++) + "\n"; // token--> Name of subroutin
+        result += space + tokens.get(currTok++) + "\n"; // token--> (
         expressionListFunc(tokens);
-        result += tokens.get(currTok++) + "\n"; // token--> )
+        result += space + tokens.get(currTok++) + "\n"; // token--> )
     }
 
-    //result += "</subrotineCall>\n";
+    //result += space + "</subrotineCall>\n";
 
 }
 
 void termFunc(LinkedList<String> tokens) {
-    result += "<term>\n";
+    result += space + "<term>\n";
+    space += " ";
 
     if (tokens.get(currTok).contains("<stringConstant>") || tokens.get(currTok).contains("<integerConstant>") || tokens.get(currTok).contains("true")
     || tokens.get(currTok).contains("false") || tokens.get(currTok).contains("null") || tokens.get(currTok).contains("this")) {
-        result += tokens.get(currTok++)+ "\n";
+        result += space + tokens.get(currTok++)+ "\n";
     }
     else if(tokens.get(currTok).contains("<identifier>")) {
-        result +=tokens.get(currTok++)+ "\n";
+        result += space +tokens.get(currTok++)+ "\n";
         if (tokens.get(currTok).contains("(")) {
             subrotineCallFunc(tokens);//(expertion)
         } else if (tokens.get(currTok).contains("[")) {//[expertion]
-            result +=tokens.get(currTok++)+ "\n";//[
+            result += space +tokens.get(currTok++)+ "\n";//[
             expressionFunc(tokens);
-            result +=tokens.get(currTok++)+ "\n";//]
+            result += space +tokens.get(currTok++)+ "\n";//]
         } else if (tokens.get(currTok).contains(".")) {
-            result +=tokens.get(currTok++)+ "\n";//.
-            result +=tokens.get(currTok++)+ "\n";//Name of subrutian
-            result +=tokens.get(currTok++)+ "\n";//(
+            result += space +tokens.get(currTok++)+ "\n";//.
+            result += space +tokens.get(currTok++)+ "\n";//Name of subrutian
+            result += space +tokens.get(currTok++)+ "\n";//(
             expressionListFunc(tokens);//call expretionFunc
-            result +=tokens.get(currTok++)+ "\n";//)
+            result += space +tokens.get(currTok++)+ "\n";//)
         }
     }
     else if(tokens.get(currTok).contains("(")) {
-        result +=tokens.get(currTok++)+ "\n";//(
+        result += space +tokens.get(currTok++)+ "\n";//(
         expressionFunc(tokens);//call expretionFunc
-        result += tokens.get(currTok++)+ "\n";//)
+        result += space + tokens.get(currTok++)+ "\n";//)
     }
     else if(tokens.get(currTok).contains("-")) {
-        result +=tokens.get(currTok++)+ "\n";//-
+        result += space +tokens.get(currTok++)+ "\n";//-
         termFunc(tokens);
     }
     else if(tokens.get(currTok).contains("~")) {
-        result +=tokens.get(currTok++)+ "\n";//~
+        result += space +tokens.get(currTok++)+ "\n";//~
         termFunc(tokens);
 
     }
-    result += "</term>\n";
+    space =space.substring(1);
+    result += space + "</term>\n";
 }
 
 
 void expressionListFunc(LinkedList<String> tokens) {
-    result += "<expressionList>\n";
+    result += space + "<expressionList>\n";
+    space += " ";
     if(!tokens.get(currTok).contains(")")){
         expressionFunc(tokens);
 
         while(tokens.get(currTok).contains(",")){
-            result += tokens.get(currTok++) + "\n"; // token--> ,
+            result += space + tokens.get(currTok++) + "\n"; // token--> ,
             expressionFunc(tokens);
         }
 
     }
-    result += "</expressionList>\n";
+    space =space.substring(1);
+    result += space + "</expressionList>\n";
 }
